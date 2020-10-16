@@ -1,0 +1,71 @@
+# Sora Client 
+
+Sep-Oct 2020 - Accessing the API of my web-based static site generator, called Sora.
+
+
+### Request login link
+
+curl -X POST -H "Content-Type: application/json" --data '{ "email" : "author-email", "url" : "http://mywebsite.com/nopwdlogin"}' http://mywebsite.com/api/v1/users/login
+
+
+response:
+
+{"user_message":"Creating New Login Link.","session_id_digest":"NJIQjqtp","status":"200","description":"OK","system_message":"A new login link has been created and sent."}
+
+
+
+
+### Activate login
+
+curl http://mywebsite.com/api/v1/users/login/?rev=NJIQjqtp
+
+
+response:
+
+{"session_id":"a43942aacc0816f105585f5009bd5d95","author_name":"myname","rev":"NJIQjqtp","description":"OK","status":"200"}
+
+
+
+
+### Create post
+
+
+curl -X POST -H "Content-Type: application/json" --data '{"author": "myname", "session_id": "a43942aacc0816f105585f5009bd5d95", "rev":"NJIQjqtp", "submit_type": "Create", "markup": "# Test Post 21Sep2020 1020 EDT\n\nHello World. This is a test post."}' http://mywebsite.com/api/v1/posts
+
+
+response:
+
+{"reading_time":0,"html":"\n\n\n<p>Hello World. This is a test post.<\/p>\n","created_date":"2020-09-21","status":"200","slug":"test-post-21sep2020-1020-edt","word_count":7,"title":"Test Post 21Sep2020 1020 EDT","author":"myname","post_type":"article","description":"OK","created_time":"14:21:07","location":"http:\/\/mywebsite.com\/test-post-21sep2020-1020-edt.html"}
+
+
+The URL:
+
+http://mywebsite.com/test-post-21sep2020-1020-edt.html
+
+
+
+
+### Read post
+
+curl http://mywebsite.com/api/v1/posts/test-post-21sep2020-1020-edt
+
+
+response:
+
+{"status":"200","markup":"# Test Post 21Sep2020 1020 EDT\n\nHello World. This is a test post.\n","description":"OK","slug":"test-post-21sep2020-1020-edt"}
+
+
+
+
+### Update post
+
+curl -X PUT -H "Content-Type: application/json" --data '{"author": "myname", "session_id": "a43942aacc0816f105585f5009bd5d95", "rev":"NJIQjqtp", "submit_type": "Update", "markup": "# Test Post 21Sep2020 1020 EDT\n\nHello World. This is a test post.\n\nNow I am updating this post with this new sentence.", "original_slug":"test-post-21sep2020-1020-edt"}' http://mywebsite.com/api/v1/posts
+
+
+response:
+
+{"post_type":"article","description":"OK","html":"\n\n\n<p>Hello World. This is a test post.<\/p>\n\n<p>Now I am updating this post with this new sentence.<\/p>\n","created_date":"2020-09-21","status":"200","created_time":"14:34:56","original_slug":"test-post-21sep2020-1020-edt","word_count":17,"title":"Test Post 21Sep2020 1020 EDT","post_id":"test-post-21sep2020-1020-edt","author":"myname","location":"http:\/\/mywebsite.com\/test-post-21sep2020-1020-edt.html","slug":"test-post-21sep2020-1020-edt","reading_time":0}
+
+
+
+
